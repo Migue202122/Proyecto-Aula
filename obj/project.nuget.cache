@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fsISyMntNh4=",
+  "dgSpecHash": "+VGhJTY7WcA=",
   "success": true,
-  "projectFilePath": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\Proyecto-Aula\\ApiGenericaChsarp.csproj",
+  "projectFilePath": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\ProyectoAula\\ApiGenericaChsarp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\andre\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.9\\microsoft.aspnetcore.openapi.9.0.9.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"

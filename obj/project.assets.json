@@ -81,11 +81,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\Proyecto-Aula\\ApiGenericaChsarp.csproj",
+      "projectUniqueName": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\ProyectoAula\\ApiGenericaChsarp.csproj",
       "projectName": "ApiGenericaChsarp",
-      "projectPath": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\Proyecto-Aula\\ApiGenericaChsarp.csproj",
+      "projectPath": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\ProyectoAula\\ApiGenericaChsarp.csproj",
       "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-      "outputPath": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\Proyecto-Aula\\obj\\",
+      "outputPath": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\ProyectoAula\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
