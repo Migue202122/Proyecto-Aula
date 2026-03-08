@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens; 
 using System.Text; 
 using ProyectoAula.Modelos; // donde está ConfiguracionJwt
+using ProyectoAula.Servicios;
+using ProyectoAula.Servicios.Abstracciones;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,9 +93,12 @@ builder.Services.AddSingleton<
     ProyectoAula.Servicios.Conexion.ProveedorConexion>();
 //lee el proveedor de base de datos desde la configuración (appsettings.json o variables de entorno)
 var proveedorBD = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "SqlServer"; 
+
 // REGISTRO DE SERVICIO CONSULTAS (DIP)
 builder.Services.AddScoped<ProyectoAula.Servicios.Abstracciones.IServicioConsultas, 
     ProyectoAula.Servicios.ServicioConsultas>();
+builder.Services.AddScoped<ProyectoAula.Servicios.Abstracciones.IInicializadorBD, 
+    ProyectoAula.Servicios.InicializadorBD>();
 // REGISTRO AUTOMÁTICO DEL REPOSITORIO SEGÚN DatabaseProvider
 switch (proveedorBD.ToLower()) 
 { 
@@ -168,6 +173,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+// Inicialización de base de datos
+using (var scope = app.Services.CreateScope())
+{
+    var inicializador = scope.ServiceProvider.GetRequiredService<IInicializadorBD>();
+    await inicializador.InicializarAsync();
+}
 // MIDDLEWARE (orden importa: se ejecuta de arriba hacia abajo) 
 // --------------------------------------------------------- 
 
