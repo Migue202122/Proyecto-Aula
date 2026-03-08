@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiGenericaChsarp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5f6ff2f2b0d8bfcb5f8e36d9a7b55d8b07cba879")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef43cae1ebf0597c190622287bb60849f70b0cbd")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiGenericaChsarp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiGenericaChsarp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
