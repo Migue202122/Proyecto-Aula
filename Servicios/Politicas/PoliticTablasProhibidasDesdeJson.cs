@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq; 
 using ProyectoAula.Servicios.Abstracciones;
 
-namespace ApigenericaCsharp.Servicios.Politicas
+namespace ProyectoAula.Servicios.Politicas
 {
     public class PoliticaTablasProhibidasDesdeJson : IPoliticaTablasProhibidas
     {

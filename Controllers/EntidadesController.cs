@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using ProyectoAula.Servicios.Abstracciones;
 using Microsoft.Data.SqlClient;
 using System.Text.Json;
-using ProyectoAula.Servicios.Abstracciones;
+
 
 namespace ProyectoAula.Controllers
 {

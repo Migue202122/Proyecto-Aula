@@ -2092,9 +2092,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\ProyectoAula\\ApiGenericaChsarp.csproj",
-      "projectName": "ApiGenericaChsarp",
-      "projectPath": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\ProyectoAula\\ApiGenericaChsarp.csproj",
+      "projectUniqueName": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\ProyectoAula\\ApiGenericaCsharp.csproj",
+      "projectName": "ApiGenericaCsharp",
+      "projectPath": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\ProyectoAula\\ApiGenericaCsharp.csproj",
       "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
       "outputPath": "D:\\UNi\\Aplicacion y Servicio Web\\proyectoscsharp\\ProyectoCurso\\ProyectoAula\\obj\\",
       "projectStyle": "PackageReference",

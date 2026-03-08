@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiGenericaCsharp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+87030e13c362216cb1bf35a288172a64e944abc5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+629f419f57adee0464b5b368bcb1bceefda6bc58")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiGenericaCsharp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiGenericaCsharp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
