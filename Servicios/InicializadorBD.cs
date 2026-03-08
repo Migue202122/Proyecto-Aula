@@ -28,16 +28,18 @@ namespace ProyectoAula.Servicios
             var proveedor = _configuration.GetValue<string>("DatabaseProvider")?.ToLower();
             var connString = _proveedorConexion.ObtenerCadenaConexion(); // Cadena con la BD específica
             var masterConnString = ObtenerCadenaMaestra(proveedor, connString);
+            var dbName = ObtenerNombreBD(connString, proveedor);
 
-            if (!string.IsNullOrEmpty(masterConnString))
+            if (!string.IsNullOrEmpty(masterConnString) && !string.IsNullOrEmpty(dbName))
             {
-                await CrearBaseDeDatosSiNoExiste(proveedor, masterConnString, ObtenerNombreBD(connString, proveedor));
+                await CrearBaseDeDatosSiNoExiste(proveedor, masterConnString, dbName);
             }
 
             await CrearTablasSiNoExisten(proveedor, connString);
+            await CrearUsuarioPorDefectoSiNoExiste(proveedor, connString);
         }
 
-        private string ObtenerCadenaMaestra(string? proveedor, string connString)
+        private string? ObtenerCadenaMaestra(string? proveedor, string connString)
         {
             if (proveedor?.Contains("sqlserver") == true || proveedor == "localdb")
             {
@@ -60,7 +62,7 @@ namespace ProyectoAula.Servicios
             return null;
         }
 
-        private string ObtenerNombreBD(string connString, string? proveedor)
+        private string? ObtenerNombreBD(string connString, string? proveedor)
         {
             if (proveedor?.Contains("sqlserver") == true || proveedor == "localdb")
                 return new SqlConnectionStringBuilder(connString).InitialCatalog;
@@ -73,6 +75,7 @@ namespace ProyectoAula.Servicios
 
         private async Task CrearBaseDeDatosSiNoExiste(string? proveedor, string masterConnString, string dbName)
         {
+            if (string.IsNullOrEmpty(dbName)) return; // Validación temprana
             try
             {
                 if (proveedor?.Contains("sqlserver") == true || proveedor == "localdb")
@@ -81,7 +84,8 @@ namespace ProyectoAula.Servicios
                     await conn.OpenAsync();
                     var cmd = new SqlCommand($"SELECT COUNT(*) FROM sys.databases WHERE name = @dbName", conn);
                     cmd.Parameters.AddWithValue("@dbName", dbName);
-                    int exists = (int)await cmd.ExecuteScalarAsync();
+                    var result = await cmd.ExecuteScalarAsync();
+                    int exists = (result != null && result != DBNull.Value) ? Convert.ToInt32(result) : 0;
                     if (exists == 0)
                     {
                         await new SqlCommand($"CREATE DATABASE [{dbName}]", conn).ExecuteNonQueryAsync();
@@ -94,7 +98,8 @@ namespace ProyectoAula.Servicios
                     await conn.OpenAsync();
                     var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM pg_database WHERE datname = @dbName", conn);
                     cmd.Parameters.AddWithValue("@dbName", dbName);
-                    long exists = (long)await cmd.ExecuteScalarAsync();
+                    var result = await cmd.ExecuteScalarAsync();
+                    long exists = (result != null && result != DBNull.Value) ? Convert.ToInt64(result) : 0;
                     if (exists == 0)
                     {
                         await new NpgsqlCommand($"CREATE DATABASE \"{dbName}\"", conn).ExecuteNonQueryAsync();
@@ -107,7 +112,8 @@ namespace ProyectoAula.Servicios
                     await conn.OpenAsync();
                     var cmd = new MySqlCommand("SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = @dbName", conn);
                     cmd.Parameters.AddWithValue("@dbName", dbName);
-                    long exists = (long)await cmd.ExecuteScalarAsync();
+                    var result = await cmd.ExecuteScalarAsync();
+                    long exists = (result != null && result != DBNull.Value) ? Convert.ToInt64(result) : 0;
                     if (exists == 0)
                     {
                         await new MySqlCommand($"CREATE DATABASE `{dbName}`", conn).ExecuteNonQueryAsync();
@@ -268,6 +274,42 @@ namespace ProyectoAula.Servicios
             // Agrega más tablas según necesites...
 
             return scripts.ToArray();
+        }
+        private async Task CrearUsuarioPorDefectoSiNoExiste(string? proveedor, string connString)
+        {
+            const string email = "admin@ejemplo.com";
+            const string password = "admin123"; // Cambiar por algo más seguro en producción
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
+            DbConnection connection = proveedor?.Contains("sqlserver") == true ? new SqlConnection(connString) :
+                                    proveedor == "postgres" ? new NpgsqlConnection(connString) :
+                                    new MySqlConnection(connString);
+
+            await using (connection)
+            {
+                await connection.OpenAsync();
+                // Verificar si el usuario ya existe
+                using var cmdCheck = connection.CreateCommand();
+                cmdCheck.CommandText = "SELECT COUNT(*) FROM usuarios WHERE email = @email";
+                var param = cmdCheck.CreateParameter();
+                param.ParameterName = "@email";
+                param.Value = email;
+                cmdCheck.Parameters.Add(param);
+
+                var result = await cmdCheck.ExecuteScalarAsync();
+                long count = (result != null && result != DBNull.Value) ? Convert.ToInt64(result) : 0;
+
+                if (count == 0)
+                {
+                    using var cmdInsert = connection.CreateCommand();
+                    cmdInsert.CommandText = "INSERT INTO usuarios (email, password_hash, nombre) VALUES (@email, @hash, @nombre)";
+                    cmdInsert.Parameters.Add(new SqlParameter("@email", email)); // Ajusta según el proveedor
+                    cmdInsert.Parameters.Add(new SqlParameter("@hash", passwordHash));
+                    cmdInsert.Parameters.Add(new SqlParameter("@nombre", "Administrador"));
+                    await cmdInsert.ExecuteNonQueryAsync();
+                    _logger.LogInformation("Usuario por defecto creado: {Email}", email);
+                }
+            }
         }
     }
 }
