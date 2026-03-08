@@ -6,6 +6,7 @@ using System.Security.Claims;                        // Para definir los claims 
 using System.Text;                                   // Para codificar la clave secreta 
 using ProyectoAula.Modelos;                          // Para la clase ConfiguracionJwt 
 using ProyectoAula.Servicios.Abstracciones;           // Para la interfaz IServicioCrud 
+     // Para permitir acceso anónimo a este controlador
 
 namespace ProyectoAul.Controllers
 {

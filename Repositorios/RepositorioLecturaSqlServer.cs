@@ -161,7 +161,7 @@ namespace ProyectoAula.Repositorios
             if(string.IsNullOrWhiteSpace(nombreTabla)) throw new ArgumentException("Elnombre de la tabla no puede estar vacio.",nameof(nombreTabla));
             string esquemaFinal = string.IsNullOrWhiteSpace(esquema)?"dbo":esquema.Trim();
             int limiteFinal = limite?? 1000;
-            string sql = $"SELECT TIP({limiteFinal})*FROM[{esquemaFinal}].[{nombreTabla}]";
+            string sql = $"SELECT TOP({limiteFinal})*FROM[{esquemaFinal}].[{nombreTabla}]";
             var resultados = new List<Dictionary<string, object?>>();
 
             try{

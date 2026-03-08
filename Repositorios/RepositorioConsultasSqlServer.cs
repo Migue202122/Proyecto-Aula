@@ -57,8 +57,7 @@ namespace ProyectoAula.Repositorios
         { 
             var lista = new List<(string, bool, string, int?)>(); 
 
-            string sql = @" 
-                SELECT  
+            string sql = @"SELECT  
                     PARAMETER_NAME, 
                     CASE WHEN PARAMETER_MODE = 'OUT' OR PARAMETER_MODE = 'INOUT' THEN 1 ELSE 0 END AS IsOutput, 
                     DATA_TYPE, 
@@ -511,8 +510,7 @@ namespace ProyectoAula.Repositorios
             } 
 
             // Si no se proporciona esquema o no se encontró, buscar primero en 'dbo', luego en cualquier esquema 
-            string sql = @" 
-                SELECT TOP 1 TABLE_SCHEMA 
+            string sql = @"SELECT TOP 1 TABLE_SCHEMA 
                 FROM INFORMATION_SCHEMA.TABLES 
                 WHERE TABLE_NAME = @tabla 
                 ORDER BY CASE WHEN TABLE_SCHEMA = 'dbo' THEN 0 ELSE 1 END"; 
