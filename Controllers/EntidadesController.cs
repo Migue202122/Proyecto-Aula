@@ -13,8 +13,8 @@ namespace ProyectoAula.Controllers
 {
     
     [Route("api/{tabla}")]
-    //[AllowAnonymous]
-    //[Authorize]
+    //[AllowAnonymous] 
+    [Authorize]
     [ApiController]
     public class EntidadesController : ControllerBase
     {
@@ -222,7 +222,7 @@ namespace ProyectoAula.Controllers
                 }); 
             } 
         }
-         [AllowAnonymous] 
+        //[AllowAnonymous] 
         [HttpPost] 
         public async Task<IActionResult> CrearAsync( 
             string tabla,                                           // Del path: /api/{tabla} 
@@ -349,7 +349,7 @@ namespace ProyectoAula.Controllers
                 }); 
             } 
         }
-          [AllowAnonymous] 
+        //[AllowAnonymous] 
         [HttpPut("{nombreClave}/{valorClave}")] 
         public async Task<IActionResult> ActualizarAsync( 
             string tabla,                                           // Del path: /api/{tabla} 
@@ -492,7 +492,7 @@ namespace ProyectoAula.Controllers
                 }); 
             } 
         } 
-         [AllowAnonymous] 
+        //[AllowAnonymous] 
         [HttpDelete("{nombreClave}/{valorClave}")] 
         public async Task<IActionResult> EliminarAsync( 
             string tabla,                                          // Del path: /api/{tabla} 
@@ -619,7 +619,7 @@ namespace ProyectoAula.Controllers
                 }); 
             } 
         } 
-         [AllowAnonymous]                                  // Acceso público para facilitar descubrimiento 
+        //[AllowAnonymous]                                  // Acceso público para facilitar descubrimiento 
         [HttpGet]                                         // Responde a peticiones GET 
         [Route("api/info")]                               // Ruta específica que no interfiere con el patrón {tabla} 
         public IActionResult ObtenerInformacion() 
@@ -650,7 +650,7 @@ namespace ProyectoAula.Controllers
                } 
             }); 
         } 
-          [AllowAnonymous]                                  // Acceso público para bienvenida 
+          //[AllowAnonymous]                                  // Acceso público para bienvenida 
         [HttpGet("/")]                                    // Mapea específicamente a la ruta raíz de la aplicación 
         public IActionResult Inicio() 
         { 
@@ -695,7 +695,7 @@ namespace ProyectoAula.Controllers
 
             };
         }
-         [AllowAnonymous] 
+         //[AllowAnonymous] 
         [HttpPost("verificar-contrasena")] 
         public async Task<IActionResult> VerificarContrasenaAsync( 
             string tabla,                                                    // Del path: /api/{tabla} 
