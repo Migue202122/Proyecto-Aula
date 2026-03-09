@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens; 
 using System.Text; 
 using ProyectoAula.Modelos; // donde está ConfiguracionJwt
-using ProyectoAula.Servicios;
-using ProyectoAula.Servicios.Abstracciones;
+using ProyectoAula.Servicios; // donde está ServicioCrud
+using ProyectoAula.Servicios.Abstracciones; // donde están las interfaces de servicios
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,8 +97,8 @@ var proveedorBD = builder.Configuration.GetValue<string>("DatabaseProvider") ?? 
 // REGISTRO DE SERVICIO CONSULTAS (DIP)
 builder.Services.AddScoped<ProyectoAula.Servicios.Abstracciones.IServicioConsultas, 
     ProyectoAula.Servicios.ServicioConsultas>();
-builder.Services.AddScoped<ProyectoAula.Servicios.Abstracciones.IInicializadorBD, 
-    ProyectoAula.Servicios.InicializadorBD>();
+// builder.Services.AddScoped<ProyectoAula.Servicios.Abstracciones.IInicializadorBD, 
+//     ProyectoAula.Servicios.InicializadorBD>();
 // REGISTRO AUTOMÁTICO DEL REPOSITORIO SEGÚN DatabaseProvider
 switch (proveedorBD.ToLower()) 
 { 
@@ -124,10 +124,10 @@ switch (proveedorBD.ToLower())
             ProyectoAula.Repositorios.Abstracciones.IRepositorioConsultas, 
             ProyectoAula.Repositorios.RepositorioConsultasMysqlMariaDB>(); 
         break; 
-    case "sqlserver": 
-    case "sqlserverexpress": 
-    case "localdb": 
-    default: 
+        case "sqlserver": 
+        case "sqlserverexpress": 
+        case "localdb": 
+        default: 
         // Repositorio de lectura para SQL Server (incluyendo LocalDb) 
         builder.Services.AddScoped<ProyectoAula.Repositorios.Abstracciones.IRepositorioLecturaTabla, 
                                    ProyectoAula.Repositorios.RepositorioLecturaSqlServer>(); 
@@ -174,12 +174,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// Inicialización de base de datos
-using (var scope = app.Services.CreateScope())
-{
-    var inicializador = scope.ServiceProvider.GetRequiredService<IInicializadorBD>();
-    await inicializador.InicializarAsync();
-}
+// // Inicialización de base de datos
+// using (var scope = app.Services.CreateScope())
+// {
+//     var inicializador = scope.ServiceProvider.GetRequiredService<IInicializadorBD>();
+//     await inicializador.InicializarAsync();
+// }
 // MIDDLEWARE (orden importa: se ejecuta de arriba hacia abajo) 
 // --------------------------------------------------------- 
 
