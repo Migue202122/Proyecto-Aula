@@ -140,32 +140,32 @@ switch (proveedorBD.ToLower())
 } 
 // CONFIGURACIÓN JWT (para autenticación segura con tokens) 
 // Vincula la sección "Jwt" del archivo appsettings.json a la clase ConfiguracionJwt. 
-builder.Services.Configure<ConfiguracionJwt>( 
-    builder.Configuration.GetSection("Jwt") 
-); 
+// builder.Services.Configure<ConfiguracionJwt>( 
+//     builder.Configuration.GetSection("Jwt") 
+// ); 
  
-// Crea una instancia temporal con la configuración de JWT. 
-var configuracionJwt = new ConfiguracionJwt(); 
-builder.Configuration.GetSection("Jwt").Bind(configuracionJwt); 
+// // Crea una instancia temporal con la configuración de JWT. 
+// var configuracionJwt = new ConfiguracionJwt(); 
+// builder.Configuration.GetSection("Jwt").Bind(configuracionJwt); 
  
-// Registra el servicio de autenticación basado en JWT Bearer. 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) 
-    .AddJwtBearer(opciones => 
-    { 
-        // Define las reglas de validación del token. 
-        opciones.TokenValidationParameters = new TokenValidationParameters 
-        { 
-            ValidateIssuer = true,           // Valida el emisor del token. 
-            ValidateAudience = true,         // Valida el público objetivo. 
-            ValidateLifetime = true,         // Valida que no esté expirado. 
-            ValidateIssuerSigningKey = true, // Valida la firma. 
-            ValidIssuer = configuracionJwt.Issuer,     // Emisor válido. 
-            ValidAudience = configuracionJwt.Audience, // Audiencia válida. 
-            IssuerSigningKey = new SymmetricSecurityKey( 
-                Encoding.UTF8.GetBytes(configuracionJwt.Key) // Clave secreta. 
-            ) 
-        }; 
-    }); 
+// // Registra el servicio de autenticación basado en JWT Bearer. 
+// builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) 
+//     .AddJwtBearer(opciones => 
+//     { 
+//         // Define las reglas de validación del token. 
+//         opciones.TokenValidationParameters = new TokenValidationParameters 
+//         { 
+//             ValidateIssuer = true,           // Valida el emisor del token. 
+//             ValidateAudience = true,         // Valida el público objetivo. 
+//             ValidateLifetime = true,         // Valida que no esté expirado. 
+//             ValidateIssuerSigningKey = true, // Valida la firma. 
+//             ValidIssuer = configuracionJwt.Issuer,     // Emisor válido. 
+//             ValidAudience = configuracionJwt.Audience, // Audiencia válida. 
+//             IssuerSigningKey = new SymmetricSecurityKey( 
+//                 Encoding.UTF8.GetBytes(configuracionJwt.Key) // Clave secreta. 
+//             ) 
+//         }; 
+//     }); 
 
 // Construye la aplicación con todo lo configurado arriba. 
 // Add services to the container.
@@ -198,7 +198,7 @@ app.UseSwaggerUI(c =>
 }); 
 
 // Redirige HTTP a HTTPS para mejorar la seguridad. 
-app.UseHttpsRedirection(); 
+// app.UseHttpsRedirection(); 
 
 // Aplica la política CORS definida como "PermitirTodo". 
 app.UseCors("PermitirTodo"); 
@@ -207,10 +207,10 @@ app.UseCors("PermitirTodo");
 app.UseSession(); 
 
 // Activa la autenticación JWT antes de aplicar la autorización. 
-app.UseAuthentication(); 
+// app.UseAuthentication(); 
 
-// Agrega el middleware de autorización. 
-app.UseAuthorization(); 
+// // Agrega el middleware de autorización. 
+// app.UseAuthorization(); 
 
 // Mapea las rutas de los controladores. 
 app.MapControllers(); 

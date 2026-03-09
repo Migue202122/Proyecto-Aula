@@ -14,7 +14,7 @@ namespace ProyectoAula.Controllers
     
     [Route("api/{tabla}")]
     //[AllowAnonymous] 
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class EntidadesController : ControllerBase
     {
