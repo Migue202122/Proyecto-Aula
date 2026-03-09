@@ -97,8 +97,8 @@ var proveedorBD = builder.Configuration.GetValue<string>("DatabaseProvider") ?? 
 // REGISTRO DE SERVICIO CONSULTAS (DIP)
 builder.Services.AddScoped<ProyectoAula.Servicios.Abstracciones.IServicioConsultas, 
     ProyectoAula.Servicios.ServicioConsultas>();
-// builder.Services.AddScoped<ProyectoAula.Servicios.Abstracciones.IInicializadorBD, 
-//     ProyectoAula.Servicios.InicializadorBD>();
+builder.Services.AddScoped<ProyectoAula.Servicios.Abstracciones.IInicializadorBD, 
+    ProyectoAula.Servicios.InicializadorBD>();
 // REGISTRO AUTOMÁTICO DEL REPOSITORIO SEGÚN DatabaseProvider
 switch (proveedorBD.ToLower()) 
 { 
@@ -174,12 +174,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// // Inicialización de base de datos
-// using (var scope = app.Services.CreateScope())
-// {
-//     var inicializador = scope.ServiceProvider.GetRequiredService<IInicializadorBD>();
-//     await inicializador.InicializarAsync();
-// }
+// Inicialización de base de datos
+using (var scope = app.Services.CreateScope())
+{
+    var inicializador = scope.ServiceProvider.GetRequiredService<IInicializadorBD>();
+    await inicializador.InicializarAsync();
+}
 // MIDDLEWARE (orden importa: se ejecuta de arriba hacia abajo) 
 // --------------------------------------------------------- 
 
