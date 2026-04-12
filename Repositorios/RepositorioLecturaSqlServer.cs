@@ -579,7 +579,109 @@ namespace ProyectoAula.Repositorios
             { 
                 throw new InvalidOperationException($"Error SQL al obtener diagnóstico: {ex.Message}", ex); 
             } 
-        } 
+        }
+
+        public async Task<int> EliminarCompuestoAsync(
+        string nombreTabla,
+        string? esquema,
+        string whereClause,
+        Dictionary<string, object> parametros)
+        {
+            if (string.IsNullOrWhiteSpace(nombreTabla))
+                throw new ArgumentException("El nombre de la tabla no puede estar vacío.", nameof(nombreTabla));
+            if (string.IsNullOrWhiteSpace(whereClause))
+                throw new ArgumentException("La cláusula WHERE no puede estar vacía.", nameof(whereClause));
+            if (parametros == null || !parametros.Any())
+                throw new ArgumentException("Los parámetros no pueden estar vacíos.", nameof(parametros));
+
+            string esquemaFinal = string.IsNullOrWhiteSpace(esquema) ? "dbo" : esquema.Trim();
+            string sql = $"DELETE FROM [{esquemaFinal}].[{nombreTabla}] WHERE {whereClause}";
+
+            try
+            {
+                string cadena = _proveedorConexion.ObtenerCadenaConexion();
+                using var conexion = new SqlConnection(cadena);
+                await conexion.OpenAsync();
+
+                using var comando = new SqlCommand(sql, conexion);
+                foreach (var p in parametros)
+                {
+                    // Agregar parámetro con su valor (el tipo lo infiere ADO.NET)
+                    comando.Parameters.AddWithValue(p.Key, p.Value ?? DBNull.Value);
+                }
+
+                return await comando.ExecuteNonQueryAsync();
+            }
+            catch (SqlException ex)
+            {
+                throw new InvalidOperationException(
+                    $"Error SQL al eliminar de '{esquemaFinal}.{nombreTabla}': {ex.Message}", ex);
+            }
+}
+
+public async Task<int> ActualizarCompuestoAsync(string nombreTabla,string? esquema,string whereClause,Dictionary<string, object> parametrosWhere,Dictionary<string, object?> datos,string? camposEncriptar = null)
+    {
+        if (string.IsNullOrWhiteSpace(nombreTabla))
+            throw new ArgumentException("El nombre de la tabla no puede estar vacío.", nameof(nombreTabla));
+        if (string.IsNullOrWhiteSpace(whereClause))
+            throw new ArgumentException("La cláusula WHERE no puede estar vacía.", nameof(whereClause));
+        if (datos == null || !datos.Any())
+            throw new ArgumentException("Los datos a actualizar no pueden estar vacíos.", nameof(datos));
+
+        string esquemaFinal = string.IsNullOrWhiteSpace(esquema) ? "dbo" : esquema.Trim();
+
+        // Encriptar campos si se especificaron (igual que en ActualizarAsync)
+        var datosFinales = new Dictionary<string, object?>(datos);
+        if (!string.IsNullOrWhiteSpace(camposEncriptar))
+        {
+            var camposAEncriptar = camposEncriptar.Split(',')
+                .Select(c => c.Trim())
+                .Where(c => !string.IsNullOrEmpty(c))
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var campo in camposAEncriptar)
+            {
+                if (datosFinales.ContainsKey(campo) && datosFinales[campo] != null)
+                {
+                    string valorOriginal = datosFinales[campo]?.ToString() ?? "";
+                    datosFinales[campo] = EncriptacionBCrypt.Encriptar(valorOriginal);
+                }
+            }
+    }
+
+    // Construir la parte SET
+    var setClauses = datosFinales.Keys.Select(k => $"[{k}] = @{k}");
+    string setSql = string.Join(", ", setClauses);
+    string sql = $"UPDATE [{esquemaFinal}].[{nombreTabla}] SET {setSql} WHERE {whereClause}";
+
+    try
+    {
+        string cadena = _proveedorConexion.ObtenerCadenaConexion();
+        using var conexion = new SqlConnection(cadena);
+        await conexion.OpenAsync();
+
+        using var comando = new SqlCommand(sql, conexion);
+
+        // Agregar parámetros para los datos (SET)
+        foreach (var kvp in datosFinales)
+        {
+            comando.Parameters.AddWithValue($"@{kvp.Key}", kvp.Value ?? DBNull.Value);
+        }
+
+        // Agregar parámetros para la cláusula WHERE
+        foreach (var p in parametrosWhere)
+        {
+            comando.Parameters.AddWithValue(p.Key, p.Value ?? DBNull.Value);
+        }
+
+        return await comando.ExecuteNonQueryAsync();
+    }
+    catch (SqlException ex)
+    {
+        throw new InvalidOperationException(
+            $"Error SQL al actualizar '{esquemaFinal}.{nombreTabla}': {ex.Message}", ex);
+    }
+}
     } 
 } 
 

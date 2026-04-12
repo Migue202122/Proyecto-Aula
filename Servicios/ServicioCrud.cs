@@ -201,6 +201,27 @@ namespace ProyectoAula.Servicios
                 valorClaveNormalizado 
             ); 
         }
+        public async Task<int> EliminarCompuestoAsync(
+    string tabla,
+    string? esquema,
+    string whereClause,
+    Dictionary<string, object> parametros)
+    {
+        // Validaciones (igual que en EliminarAsync)
+        if (string.IsNullOrWhiteSpace(tabla))
+            throw new ArgumentException("El nombre de la tabla no puede estar vacío.", nameof(tabla));
+        if (string.IsNullOrWhiteSpace(whereClause))
+            throw new ArgumentException("La cláusula WHERE no puede estar vacía.", nameof(whereClause));
+        if (parametros == null || !parametros.Any())
+            throw new ArgumentException("Los parámetros no pueden estar vacíos.", nameof(parametros));
+
+        // Validar tabla permitida
+        if (!_politicaTablasProhibidas.EsTablaPermitida(tabla))
+            throw new UnauthorizedAccessException($"Acceso denegado: La tabla '{tabla}' está restringida.");
+
+        // Delegar en el repositorio (que ya implementa la lógica SQL)
+        return await _repositorioLectura.EliminarCompuestoAsync(tabla, esquema, whereClause, parametros);
+    }
          public async Task<(int codigo, string mensaje)> VerificarContrasenaAsync( 
             string nombreTabla, 
             string? esquema, 

@@ -366,6 +366,26 @@ StringSplitOptions.TrimEntries))
                     excepcionMySql 
                 ); 
             } 
+        }
+        public async Task<int> EliminarCompuestoAsync(
+    string nombreTabla,
+    string? esquema,
+    string whereClause,
+    Dictionary<string, object> parametros)
+        {
+            // Implementación pendiente o lanzar excepción si no se usa
+            throw new NotImplementedException("EliminarCompuestoAsync no implementado para MySQL/MariaDB");
+        }
+
+        public async Task<int> ActualizarCompuestoAsync(
+            string nombreTabla,
+            string? esquema,
+            string whereClause,
+            Dictionary<string, object> parametrosWhere,
+            Dictionary<string, object?> datos,
+            string? camposEncriptar = null)
+        {
+            throw new NotImplementedException("ActualizarCompuestoAsync no implementado para MySQL/MariaDB");
         } 
     }
 }

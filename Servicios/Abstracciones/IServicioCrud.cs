@@ -11,5 +11,6 @@ namespace ProyectoAula.Servicios.Abstracciones
         Task<int> ActualizarAsync(string nombreTabla, string? esquema, string nombreClave, string valorClave, Dictionary<string, object?> datos, string? camposEncriptar = null);
         Task<int> EliminarAsync(string nombreTabla,string? esquema,string nombreClave,string valorClave); 
         Task<(int codigo, string mensaje)> VerificarContrasenaAsync(string nombreTabla,string? esquema,string campoUsuario,string campoContrasena,string valorUsuario,string valorContrasena);
+        Task<int> EliminarCompuestoAsync(string tabla,string? esquema, string wherClause, Dictionary<string, object> parametros);
     }
 }

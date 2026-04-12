@@ -508,11 +508,16 @@ namespace ProyectoAula.Controllers
                     "INICIO eliminación - Tabla: {Tabla}, Clave: {Clave}={Valor}, Esquema: {Esquema}", 
                     tabla, nombreClave, valorClave, esquema ?? "por defecto" 
                 ); 
- 
-                // DELEGACIÓN AL SERVICIO (aplicando SRP y DIP) 
-                int filasEliminadas = await _servicioCrud.EliminarAsync( 
-                    tabla, esquema, nombreClave, valorClave 
-                ); 
+
+                var columnas = nombreClave.Split(',');
+                var valores = valorClave.Split(',');
+                if (columnas.Length != valores.Length) return BadRequest(new{mensaje = "Número de columnas y valores no coincide"});
+                int filasEliminadas;
+                if (columnas.Length == 1){filasEliminadas = await _servicioCrud.EliminarAsync(tabla, esquema, nombreClave, valorClave);}
+                else{ var condiciones = new List<string>(); var parametros = new Dictionary<string, object>();
+                for (int i = 0; i <columnas.Length; i++){string paramName = $"@p{i}"; condiciones.Add($"{columnas[i].Trim()} = {paramName}"); parametros[paramName] = valores[i].Trim();}
+                string whereClause = string.Join(" AND ", condiciones); filasEliminadas = await _servicioCrud.EliminarCompuestoAsync(tabla,esquema,whereClause,parametros);
+                }
  
                 // EVALUAR RESULTADO SEGÚN FILAS ELIMINADAS 
                 if (filasEliminadas > 0) 
