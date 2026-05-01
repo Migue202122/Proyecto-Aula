@@ -305,7 +305,7 @@ namespace ProyectoAula.Servicios
                     cmdInsert.CommandText = "INSERT INTO usuarios (email, password_hash, nombre) VALUES (@email, @hash, @nombre)";
                     cmdInsert.Parameters.Add(new SqlParameter("@email", email)); // Ajusta según el proveedor
                     cmdInsert.Parameters.Add(new SqlParameter("@hash", passwordHash));
-                    cmdInsert.Parameters.Add(new SqlParameter("@nombre", "Administrador"));
+                    cmdInsert.Parameters.Add(new SqlParameter("@nombre", "Usuario"));
                     await cmdInsert.ExecuteNonQueryAsync();
                     _logger.LogInformation("Usuario por defecto creado: {Email}", email);
                 }

@@ -140,9 +140,9 @@ switch (proveedorBD.ToLower())
 }
 // CONFIGURACIÓN JWT (para autenticación segura con tokens) 
 // Vincula la sección "Jwt" del archivo appsettings.json a la clase ConfiguracionJwt. 
-// builder.Services.Configure<ConfiguracionJwt>( 
-//     builder.Configuration.GetSection("Jwt") 
-// ); 
+builder.Services.Configure<ConfiguracionJwt>( 
+    builder.Configuration.GetSection("Jwt") 
+); 
 
 // // Crea una instancia temporal con la configuración de JWT. 
 var configuracionJwt = new ConfiguracionJwt();
@@ -206,10 +206,10 @@ app.UseCors("PermitirTodo");
 app.UseSession();
 
 // Activa la autenticación JWT antes de aplicar la autorización. 
-// app.UseAuthentication(); 
+app.UseAuthentication(); 
 
 // // Agrega el middleware de autorización. 
-// app.UseAuthorization(); 
+app.UseAuthorization(); 
 
 // Mapea las rutas de los controladores. 
 app.MapControllers();
