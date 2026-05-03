@@ -13,7 +13,6 @@ namespace ProyectoAula.Controllers
 {
 
     [Route("api/{tabla}")]
-    //[AllowAnonymous] 
     [Authorize]
     [ApiController]
     public class EntidadesController : ControllerBase
@@ -334,6 +333,7 @@ namespace ProyectoAula.Controllers
             }
         }
         //[AllowAnonymous] 
+        [Authorize(Roles = "administrador")]
         [HttpPut("{nombreClave}/{valorClave}")]
         public async Task<IActionResult> ActualizarAsync(
             string tabla,                                           // Del path: /api/{tabla} 
@@ -472,6 +472,7 @@ namespace ProyectoAula.Controllers
             }
         }
         //[AllowAnonymous] 
+        [Authorize(Roles = "administrador")]
         [HttpDelete("{nombreClave}/{valorClave}")]
         public async Task<IActionResult> EliminarAsync(
             string tabla,                                          // Del path: /api/{tabla} 

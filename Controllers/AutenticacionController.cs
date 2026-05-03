@@ -53,6 +53,7 @@ namespace ProyectoAul.Controllers
                 credenciales.Usuario,
                 credenciales.Contrasena
             );
+            
             if (codigo == 404)
                 return NotFound(new { estado = 404, mensaje = "Usuario no encontrado." });
 
@@ -61,11 +62,26 @@ namespace ProyectoAul.Controllers
 
             if (codigo != 200)
                 return StatusCode(500, new { estado = 500, mensaje = "Error interno durante la verificación.", detalle = mensaje });
+
+            string rolUsuario = "usuario"; // Rol predeterminado, se puede mejorar para obtenerlo dinámicamente
+            try
+            {
+                var usuarios = await _servicioCrud.ObtenerPorClaveAsync(credenciales.Tabla, null, credenciales.CampoUsuario, credenciales.Usuario);
+                if(usuarios != null && usuarios.Count > 0){var usuario = usuarios[0];
+                if(usuario.ContainsKey("rol") && usuario["rol"] != null){rolUsuario  = usuario["rol"]?.ToString() ?? "usuario";   }
+                }                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener rol del usuario: {ex.Message}");
+            }
+            
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, credenciales.Usuario),
                 new Claim("tabla", credenciales.Tabla),
-                new Claim("campoUsuario", credenciales.CampoUsuario)
+                new Claim("campoUsuario", credenciales.CampoUsuario),
+                new Claim(ClaimTypes.Role, rolUsuario)
             };
             var clave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuracionJwt.Key));
             var credencialesFirma = new SigningCredentials(clave, SecurityAlgorithms.HmacSha256);

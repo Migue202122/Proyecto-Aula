@@ -367,17 +367,17 @@ StringSplitOptions.TrimEntries))
                 ); 
             } 
         }
-        public async Task<int> EliminarCompuestoAsync(
-    string nombreTabla,
-    string? esquema,
-    string whereClause,
-    Dictionary<string, object> parametros)
+        public Task<int> EliminarCompuestoAsync(
+            string nombreTabla,
+            string? esquema,
+            string whereClause,
+            Dictionary<string, object> parametros)
         {
             // Implementación pendiente o lanzar excepción si no se usa
             throw new NotImplementedException("EliminarCompuestoAsync no implementado para MySQL/MariaDB");
         }
 
-        public async Task<int> ActualizarCompuestoAsync(
+        public  Task<int> ActualizarCompuestoAsync(
             string nombreTabla,
             string? esquema,
             string whereClause,
