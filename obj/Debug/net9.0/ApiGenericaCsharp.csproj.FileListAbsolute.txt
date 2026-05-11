@@ -170,3 +170,9 @@ D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\obj\
 D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\obj\Debug\net9.0\ApiGener.593DCD1A.Up2Date
 D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\obj\Debug\net9.0\ApiGenericaCsharp.genruntimeconfig.cache
 D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\obj\Debug\net9.0\ref\ApiGenericaCsharp.dll
+D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\bin\Debug\net9.0\publicado\web.config
+D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\bin\Debug\net9.0\publicado\ApiGenericaCsharp.deps.json
+D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\bin\Debug\net9.0\publicado\ApiGenericaCsharp.runtimeconfig.json
+D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\bin\Debug\net9.0\publicado\ApiGenericaCsharp.staticwebassets.endpoints.json
+D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\bin\Debug\net9.0\publicado\appsettings.Development.json
+D:\UNi\Aplicacion y Servicio Web\proyectoscsharp\ProyectoCurso\ProyectoAula\bin\Debug\net9.0\publicado\appsettings.json

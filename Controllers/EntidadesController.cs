@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using ProyectoAula.Servicios.Abstracciones;
 using Microsoft.Data.SqlClient;
 using System.Text.Json;
+using System.Reflection.Metadata;
 
 
 namespace ProyectoAula.Controllers
@@ -333,7 +334,7 @@ namespace ProyectoAula.Controllers
             }
         }
         //[AllowAnonymous] 
-        [Authorize(Roles = "administrador")]
+        // [Authorize(Roles = "administrador")]
         [HttpPut("{nombreClave}/{valorClave}")]
         public async Task<IActionResult> ActualizarAsync(
             string tabla,                                           // Del path: /api/{tabla} 
@@ -344,6 +345,19 @@ namespace ProyectoAula.Controllers
             [FromQuery] string? camposEncriptar = null             // Query param: ?camposEncriptar=password,pin 
         )
         {
+            if(!User.IsInRole("administrador"))
+            {
+                _logger.LogWarning(
+                    "ACCESO DENEGADO - Usuario {Usuario} sin rol administrador intentó actualizar registro en tabla {Tabla}",
+                    User.Identity?.Name ?? "desconocido", tabla
+                );
+                return StatusCode(403, new
+                {
+                    estado = 403,
+                    mensaje = "Acceso denegado. Se requiere rol de administrador para esta operación.",
+                    tabla = tabla
+                });
+            }
             try
             {
                 // LOGGING DE AUDITORÍA 
@@ -472,7 +486,7 @@ namespace ProyectoAula.Controllers
             }
         }
         //[AllowAnonymous] 
-        [Authorize(Roles = "administrador")]
+        // [Authorize(Roles = "administrador")]
         [HttpDelete("{nombreClave}/{valorClave}")]
         public async Task<IActionResult> EliminarAsync(
             string tabla,                                          // Del path: /api/{tabla} 
@@ -481,6 +495,19 @@ namespace ProyectoAula.Controllers
             [FromQuery] string? esquema = null                     // Query param: ?esquema=valor 
         )
         {
+            if(!User.IsInRole("administrador"))
+            {
+                _logger.LogWarning(
+                    "ACCESO DENEGADO - Usuario {Usuario} sin rol administrador intentó eliminar registro en tabla {Tabla}",
+                    User.Identity?.Name ?? "desconocido", tabla
+                );
+                return StatusCode(403, new
+                {
+                    estado = 403,
+                    mensaje = "Acceso denegado. Se requiere rol de administrador para esta operación.",
+                    tabla = tabla
+                });
+            }
             try
             {
                 // LOGGING DE AUDITORÍA 
